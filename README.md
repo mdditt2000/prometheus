@@ -1,5 +1,5 @@
 # Prometheus Example - BIGIP with Telemetry Streaming and Container Ingress Services
-Coming soon.
+Prometheus is an open source monitoring framework. Explaining Prometheus is out of the scope of this repo. In this repo, I will guide you to setup Prometheus on a BIGIP and use Telemetry Streaming and collect metrics
 
 ## About theses example / repo
 
