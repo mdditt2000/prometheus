@@ -5,7 +5,7 @@ metadata:
     virtual-server.f5.com/http-port: "443"
     ingress.kubernetes.io/allow-http: "false"
     ingress.kubernetes.io/ssl-redirect: "true"
-    virtual-server.f5.com/ip: "10.192.75.10"
+    virtual-server.f5.com/ip: "10.192.75.107"
   name: prometheus-ui
   namespace: monitoring
 spec: 
