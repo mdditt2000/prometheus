@@ -76,9 +76,6 @@ Kubectl create -f prometheus-service.yaml --namespace=monitoring
 ```
 ### Create a file named prometheus-ingress.yaml for Container Ingress Services
 Create a Ingress for Container Ingress Services to configure F5 BIGIP Locate the prometheus-deployment.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-deployment.yaml)
-
-The annotations in the below Ingress provides the public virtual-IP used to connect the prometheus-ui. BIGIP will terminate SSL and work traffic to the pod on port 8080. You can also add additional security setting to the Ingress resource to prevent the prometheus-ui from web attacks.
-
 ```
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -99,7 +96,12 @@ spec:
       hosts: ~
       secretName: /Common/clientssl
 ```
+The annotations in the above Ingress provides the public virtual-IP used to connect the prometheus-ui. BIGIP will terminate SSL and work traffic to the pod on port 8080. You can also add additional security setting to the Ingress resource to prevent the prometheus-ui from web attacks.
 
+Create the Ingress using the following command. Locate the prometheus-ingress.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-ingress.yaml)
+```
+Kubectl create -f prometheus-ingress.yaml --namespace=monitoring
+```
 
 ## About theses example / repo
 
