@@ -35,6 +35,13 @@ prometheus-deployment   1/1     1            1           10d
 ```
 ## Connecting To Prometheus Dashboard via F5 Container Ingress Services
 
+You can view the deployed Prometheus dashboard in two ways.
+
+* Using Kubectl port forwarding
+* Exposing the Prometheus deployment as a service with F5 Load Balancer using Container Ingress Services
+
+
+
 
 ## About theses example / repo
 
