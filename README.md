@@ -26,6 +26,16 @@ Create a file named prometheus-deployment.yaml. Locate the prometheus-deployment
 ```
 kubectl create  -f prometheus-deployment.yaml
 ```
+You can check the created deployment using the following command
+```
+[kube@k8s-1-18-master prometheus]$ kubectl get deployments --namespace=monitoring
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+prometheus-deployment   1/1     1            1           10d
+[kube@k8s-1-18-master prometheus]$
+```
+
+
+
 ## About theses example / repo
 
 * Coming soon [document](https://github.com/mdditt2000/kubernetes-1-18/blob/master/k8s%20cluster%20install/install%20guide/install-cluster.md)
