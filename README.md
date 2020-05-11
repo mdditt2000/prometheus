@@ -40,8 +40,40 @@ You can view the deployed Prometheus dashboard in two ways.
 * Using Kubectl port forwarding
 * Exposing the Prometheus deployment as a service with F5 Load Balancer using Container Ingress Services
 
+### Using Kubectl port forwarding
 
+Follow the using Kubectl port forwarding steps documented at devopscube.com [link](https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/)
 
+### Exposing the Prometheus deployment as a service with F5 Load Balancer using Container Ingress Services
+
+To access the Prometheus dashboard over a IP or a DNS name, you need to expose it as Kubernetes service.
+
+## Create a file named prometheus-service.yaml
+We will expose Prometheus using ClusterIP. ClusterIP allows the BIGIP to forward traffic directly to the Prometheus Pod bypassing kube-proxy. which will create a load balancer and points it to the service. You can use ClusterIP type, which will create a F5 BIGIP load balancer and points it to the service
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+  namespace: monitoring
+  annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/port:   '9090'
+  
+spec:
+  selector: 
+    app: prometheus-server
+  type: ClusterIP 
+  ports:
+    - port: 8080
+      targetPort: 9090
+```
+The annotations in the above service YAML makes sure that the service endpoint is scrapped by Prometheus. The prometheus.io/port should always be the target port mentioned in service YAML
+
+Create the service using the following command. Locate the prometheus-service.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-service.yaml)
+```
+Kubectl create -f prometheus-service.yaml --namespace=monitoring
+```
 
 ## About theses example / repo
 
