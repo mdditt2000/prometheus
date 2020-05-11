@@ -8,12 +8,24 @@ Create a Kubernetes namespace for all our monitoring components
 ```
 kubectl create namespace monitoring
 ```
-Create a file named clusterRole.yaml and copy the content of this. Locate the yaml file from my repo clusterRole.yaml [yaml](https://github.com/mdditt2000/prometheus/blob/master/clusterRole.yaml)
+Create a file named clusterRole.yaml. Locate the clusterRole.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/clusterRole.yaml)
 ```
 kubectl create -f clusterRole.yaml
 ```
+### Create a Config Map
+We should create a config map with all the prometheus scrape config and alerting rules, which will be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files
 
+Create a file called config-map.yaml. Locate the config-map.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/config-map.yaml)
+```
+kubectl create -f config-map.yaml
+```
+The prometheus.yaml contains all the configuration to dynamically discover pods and services running in the Kubernetes cluster. We have the following scrape jobs in our Prometheus scrape configuration. For more information review the following from devopscube.com [link](https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/)
 
+### Create a Prometheus Deployment
+Create a file named prometheus-deployment.yaml. Locate the prometheus-deployment.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-deployment.yaml)
+```
+kubectl create  -f prometheus-deployment.yaml
+```
 ## About theses example / repo
 
 * Coming soon [document](https://github.com/mdditt2000/kubernetes-1-18/blob/master/k8s%20cluster%20install/install%20guide/install-cluster.md)
