@@ -49,7 +49,7 @@ Follow the using Kubectl port forwarding steps documented at devopscube.com [lin
 To access the Prometheus dashboard over a IP or a DNS name, you need to expose it as Kubernetes service.
 
 ### Create a file named prometheus-service.yaml
-We will expose Prometheus using ClusterIP. ClusterIP allows the BIGIP to forward traffic directly to the Prometheus Pod bypassing kube-proxy. which will create a load balancer and points it to the service. You can use ClusterIP type, which will create a F5 BIGIP load balancer and points it to the service
+We will expose Prometheus using ClusterIP. ClusterIP allows the BIGIP to forward traffic directly to the Prometheus pod bypassing kube-proxy. Use ClusterIP type, which will create a F5 BIGIP load balancer and points it to the service
 ```
 apiVersion: v1
 kind: Service
@@ -74,6 +74,32 @@ Create the service using the following command. Locate the prometheus-service.ya
 ```
 Kubectl create -f prometheus-service.yaml --namespace=monitoring
 ```
+### Create a file named prometheus-ingress.yaml for Container Ingress Services
+Create a Ingress for Container Ingress Services to configure F5 BIGIP Locate the prometheus-deployment.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-deployment.yaml)
+
+The annotations in the below Ingress provides the public virtual-IP used to connect the prometheus-ui. BIGIP will terminate SSL and work traffic to the pod on port 8080. You can also add additional security setting to the Ingress resource to prevent the prometheus-ui from web attacks.
+
+```
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata: 
+  annotations: 
+    virtual-server.f5.com/http-port: "443"
+    ingress.kubernetes.io/allow-http: "false"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    virtual-server.f5.com/ip: "10.192.75.107"
+  name: prometheus-ui
+  namespace: monitoring
+spec: 
+  backend: 
+    serviceName: prometheus-service
+    servicePort: 8080
+  tls: 
+    - 
+      hosts: ~
+      secretName: /Common/clientssl
+```
+
 
 ## About theses example / repo
 
