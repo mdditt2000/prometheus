@@ -104,7 +104,7 @@ Kubectl create -f prometheus-ingress.yaml --namespace=monitoring
 ```
 Once created, you can access the Prometheus dashboard using the virtual IP address 
 
-![Image of CRDs](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-11_16-28-32.png)
+![CRDs](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-11_16-28-32.png)
 
 ## Configure BIGIP Telemetry Streaming for Prometheus
 
@@ -166,4 +166,6 @@ Add BIGIP - TS job_name to the config-map.yaml so it applies the configuration P
 * basic_auth: - credentials for Prometheus to authenticate to the BIGIP
 * static_configs: - Contains one or more targets for this prometheus job
 
+Check the targets Prometheus dashboard to make sure Prometheus is able to pull BIGIP 
 
+![Target](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-12_14-52-08.png
