@@ -140,11 +140,10 @@ The Prometheus Pull Consumer outputs the telemetry data according to the Prometh
 model specification configured in Prometheus
 
 ### Configure Prometheus
-
 Since we created a config map with all the prometheus scrape config and alerting rules, it be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files.
-```
-- Create job(s) to prometheus config for each bigip. This 
-    ` - job_name: 'BIGIP - TS'
+
+``` 
+     - job_name: 'BIGIP - TS'
         scheme: 'https'
         tls_config:
           insecure_skip_verify: true
@@ -155,8 +154,7 @@ Since we created a config map with all the prometheus scrape config and alerting
         static_configs:
         - targets: ['192.168.200.92']
 ```
-Add Prometheus configuration to the configmap and re-apply
-
+Add BIGIP - TS job to the config-map.yaml so its mounts to the Prometheus container.
 
 
 
