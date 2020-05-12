@@ -150,7 +150,7 @@ Since we created a config map with all the prometheus scrape config and alerting
         metrics_path: '/mgmt/shared/telemetry/pullconsumer/metrics'
         basic_auth:
           username: 'admin'
-          password: 'admin'
+          password: 'secret'
         static_configs:
         - targets: ['192.168.200.92']
 ```
