@@ -170,4 +170,4 @@ Add BIGIP - TS job_name to the config-map.yaml so it applies the configuration P
 
 Check the targets Prometheus dashboard to make sure Prometheus is able to pull BIGIP 
 
-![Target](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-12_14-52-08.png
+[Target](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-12_14-52-08.png
