@@ -152,7 +152,7 @@ Since we created a config map with all the prometheus scrape config and alerting
         scheme: 'https'
         tls_config:
           insecure_skip_verify: true
-        metrics_path: '/mgmt/shared/telemetry/pullconsumer/My_Pull_Consumer'
+        metrics_path: '/mgmt/shared/telemetry/pullconsumer/metrics'
         basic_auth:
           username: 'prometheus'
           password: <secret>
