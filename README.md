@@ -171,3 +171,16 @@ Add BIGIP - TS job_name to the config-map.yaml so it applies the configuration P
 Check the targets Prometheus dashboard to make sure Prometheus is able to pull BIGIP 
 
 ![Image of Target](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-12_14-52-08.png)
+
+There are many metrics available to graph or monitor. Example below virtualServers current connections. Use the label to graph the metric desired.
+```
+# HELP f5_clientside_curConns clientside.curConns
+# TYPE f5_clientside_curConns gauge
+f5_clientside_curConns{virtualServers="/k8s_AS3/Shared/ingress_10_192_75_107_80"} 0
+f5_clientside_curConns{virtualServers="/k8s_AS3/Shared/ingress_10_192_75_107_443"} 8
+f5_clientside_curConns{virtualServers="/k8s_AS3/Shared/ingress_10_192_75_108_80"} 0
+```
+Graph displaying concurrent connection
+
+![Image of graph](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-12_16-08-21.png)
+
