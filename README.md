@@ -102,7 +102,9 @@ Create the Ingress using the following command. Locate the prometheus-ingress.ya
 ```
 Kubectl create -f prometheus-ingress.yaml --namespace=monitoring
 ```
-Once created, you can access the Prometheus dashboard using the virtual IP address ![Image of CRDs](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-11_16-28-32.png)
+Once created, you can access the Prometheus dashboard using the virtual IP address 
+
+![Image of CRDs](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-11_16-28-32.png)
 
 ## About theses example / repo
 
