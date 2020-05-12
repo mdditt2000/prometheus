@@ -106,6 +106,60 @@ Once created, you can access the Prometheus dashboard using the virtual IP addre
 
 ![Image of CRDs](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-11_16-28-32.png)
 
+## Configure BIGIP Telemetry Streaming for Prometheus
+
+Support for the Prometheus pull consumer is available in TS 1.12.0 and later
+
+Install telemetry streaming rpm package on BIGIP. Following link explains how to install the rpm on BIGIP [Downloading and installing Telemetry Streaming](https://clouddocs.f5.com/products/extensions/f5-telemetry-streaming/latest/installation.html)
+
+Since Prometheus support for Telemetry Streaming has not being released you can find the [rpm](https://github.com/mdditt2000/prometheus/blob/master/rpm/f5-telemetry-1.12.0-1.noarch.rpm)
+
+## Configure Telemetry Streaming declaration
+This example shows how to use the Prometheus pull consumer. For this pull consumer, the type
+must be Prometheus in the Pull Consumer class as shown
+```
+{
+    "class": "Telemetry",
+    "My_Poller": {
+        "class": "Telemetry_System_Poller",
+        "interval": 0
+    },
+    "My_System": {
+        "class": "Telemetry_System",
+        "enable": "true",
+        "systemPoller": "My_Poller"
+    },
+    "My_Pull_Consumer": {
+        "class": "Telemetry_Pull_Consumer",
+        "type": "Prometheus",
+        "systemPoller": "My_Poller"
+    }
+}
+```
+The Prometheus Pull Consumer outputs the telemetry data according to the Prometheus data
+model specification configured in Prometheus
+
+### Configure Prometheus
+
+Since we created a config map with all the prometheus scrape config and alerting rules, it be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files.
+```
+- Create job(s) to prometheus config for each bigip. This 
+    ` - job_name: 'BIGIP - TS'
+        scheme: 'https'
+        tls_config:
+          insecure_skip_verify: true
+        metrics_path: '/mgmt/shared/telemetry/pullconsumer/metrics'
+        basic_auth:
+          username: 'admin'
+          password: 'admin'
+        static_configs:
+        - targets: ['192.168.200.92']
+```
+Add Prometheus configuration to the configmap and re-apply
+
+
+
+
 ## About theses example / repo
 
 * Coming soon [document](https://github.com/mdditt2000/kubernetes-1-18/blob/master/k8s%20cluster%20install/install%20guide/install-cluster.md)

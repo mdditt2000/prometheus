@@ -66,8 +66,7 @@ data:
           regex: (.+)
           target_label: __metrics_path__
           replacement: /api/v1/nodes/${1}/proxy/metrics
-
-      
+ 
       - job_name: 'kubernetes-pods'
 
         kubernetes_sd_configs:
@@ -150,3 +149,14 @@ data:
         - source_labels: [__meta_kubernetes_service_name]
           action: replace
           target_label: kubernetes_name
+
+     - job_name: 'BIGIP - TS'
+        scheme: 'https'
+        tls_config:
+          insecure_skip_verify: true
+        metrics_path: '/mgmt/shared/telemetry/pullconsumer/metrics'
+        basic_auth:
+          username: 'admin'
+          password: 'admin'
+        static_configs:
+        - targets: ['192.168.200.92']
