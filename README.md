@@ -125,11 +125,11 @@ must be Prometheus in the Pull Consumer class as shown
         "interval": 0
     },
     "My_System": {
-        "class": "Telemetry_System",
-        "enable": "true",
-        "systemPoller": "My_Poller"
-    },
-    "My_Pull_Consumer": {
+"class": "Telemetry_System",
+"enable": "true",
+"systemPoller": "My_Poller"
+},
+    "metrics": {
         "class": "Telemetry_Pull_Consumer",
         "type": "Prometheus",
         "systemPoller": "My_Poller"
@@ -139,6 +139,9 @@ must be Prometheus in the Pull Consumer class as shown
 The Prometheus Pull Consumer outputs the telemetry data according to the Prometheus data
 model specification configured in Prometheus
 
+## Create Prometheus user on BIGIP
+Create a user for basic_auth allowing Prometheus access to the metrics_path
+
 ### Configure Prometheus
 Since we created a config map with all the prometheus scrape config and alerting rules, it be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files.
 
@@ -147,14 +150,14 @@ Since we created a config map with all the prometheus scrape config and alerting
         scheme: 'https'
         tls_config:
           insecure_skip_verify: true
-        metrics_path: '/mgmt/shared/telemetry/pullconsumer/metrics'
+        metrics_path: '/mgmt/shared/telemetry/pullconsumer/My_Pull_Consumer'
         basic_auth:
-          username: 'admin'
-          password: 'secret'
+          username: 'prometheus'
+          password: <secret>
         static_configs:
         - targets: ['192.168.200.92']
 ```
-Add BIGIP - TS job to the config-map.yaml so its mounts to the Prometheus container.
+Add BIGIP - TS job_name to the config-map.yaml so it applies the configuration Prometheus.yaml
 
 
 
