@@ -160,7 +160,7 @@ data:
         metrics_path: '/mgmt/shared/telemetry/pullconsumer/metrics'
         basic_auth:
           username: 'prometheus'
-          password: ''pr0m3th3u$'
+          password: 'f5PME123'
         static_configs:
         - targets: ['192.168.200.92']
  

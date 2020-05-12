@@ -159,12 +159,11 @@ Since we created a config map with all the prometheus scrape config and alerting
 ```
 Add BIGIP - TS job_name to the config-map.yaml so it applies the configuration Prometheus.yaml
 
+**Field description**
+* schema: How prometheus will connect to the polled deviceConfig
+* tls_config: - Is where you  disable SSL certificate validation
+* metrics path:  - the path used to retrieve metrics from the BIGIP 
+* basic_auth: - credentials for Prometheus to authenticate to the BIGIP
+* static_configs: - Contains one or more targets for this prometheus job
 
 
-## About theses example / repo
-
-* Coming soon [document](https://github.com/mdditt2000/kubernetes-1-18/blob/master/k8s%20cluster%20install/install%20guide/install-cluster.md)
-* Coming soon [document](https://github.com/mdditt2000/kubernetes-1-18/blob/master/cis%201.14/QuickStartGuideCluster.md)
-* Coming soon [document](https://github.com/mdditt2000/kubernetes-1-18/blob/master/cis%201.14/QuickStartGuideNode.md)
-* Coming soon [document](https://github.com/mdditt2000/kubernetes-1-18/blob/master/cis%201.14/type-loadbalancer/QuickStartGuide.md)
-* Coming soon [document](https://github.com/mdditt2000/kubernetes-1-18/blob/master/kubernetes-faq.md)
