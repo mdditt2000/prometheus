@@ -125,10 +125,12 @@ must be Prometheus in the Pull Consumer class as shown
         "interval": 0
     },
     "My_System": {
-"class": "Telemetry_System",
-"enable": "true",
-"systemPoller": "My_Poller"
-},
+        "class": "Telemetry_System",
+        "enable": "true",
+        "systemPoller": [
+            "My_Poller"
+        ]
+    },
     "metrics": {
         "class": "Telemetry_Pull_Consumer",
         "type": "Prometheus",
