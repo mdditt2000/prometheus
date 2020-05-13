@@ -172,4 +172,3 @@ data:
             - localhost:8080
         - source_labels: [bigip]
           target_label: bigip
- 
