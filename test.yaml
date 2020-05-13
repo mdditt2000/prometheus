@@ -1,0 +1,8 @@
+      - job_name: 'CIS'
+
+        metrics_path: '/metrics'
+        static_configs:
+          - targets:
+            - localhost:8080
+        - source_labels: [bigip]
+          target_label: bigip
