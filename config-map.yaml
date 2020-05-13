@@ -169,4 +169,4 @@ data:
         metrics_path: '/metrics'
         static_configs:
           - targets:
-            - localhost:8080
+            - 10.244.2.31:8080
