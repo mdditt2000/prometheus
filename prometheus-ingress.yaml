@@ -12,6 +12,4 @@ spec:
     serviceName: prometheus-service
     servicePort: 8080
   tls: 
-    - 
-      hosts: ~
-      secretName: /Common/clientssl
+  - secretName: /Common/clientssl
