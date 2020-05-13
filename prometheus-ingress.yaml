@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata: 
   annotations: 
-    ingress.kubernetes.io/allow-http: "true"
+    ingress.kubernetes.io/allow-http: "false"
     ingress.kubernetes.io/ssl-redirect: "true"
     virtual-server.f5.com/ip: "10.192.75.107"
   name: prometheus-ui
