@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: k8s-bigip-ctlr-deployment-01
+  name: k8s-bigip-ctlr-deployment
   namespace: kube-system
 spec: 
   progressDeadlineSeconds: 600
@@ -40,7 +40,7 @@ spec:
             - "--manage-ingress=true"
             - "--manage-routes=false"
             - "--manage-configmaps=false"
-            - "--custom-resource-mode=true"
+            - "--custom-resource-mode=false"
             - "--http-listen-address=0.0.0.0:8080"
             - "--as3-validation=true"
             - "--log-as3-response=true"
@@ -59,6 +59,6 @@ spec:
                 secretKeyRef: 
                   key: password
                   name: bigip-login
-          image: "chandrajakkidi/k8s-bigip-ctlr:2.0.0"
+          image: "f5networks/k8s-bigip-ctlr:2.0.0"
           name: f5-server
       serviceAccountName: k8s-bigip-ctlr
