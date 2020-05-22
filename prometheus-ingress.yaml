@@ -4,7 +4,7 @@ metadata:
   annotations: 
     ingress.kubernetes.io/allow-http: "false"
     ingress.kubernetes.io/ssl-redirect: "true"
-    virtual-server.f5.com/ip: "10.192.75.107"
+    virtual-server.f5.com/ip: "10.192.75.106"
   name: prometheus-ui
   namespace: monitoring
 spec: 
