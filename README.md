@@ -1,9 +1,11 @@
-# Prometheus Example - BIGIP with Telemetry Streaming and Container Ingress Services
-Prometheus is an open source monitoring framework. Explaining Prometheus is out of the scope of this repo. In this repo, I will guide you to setup Prometheus on a BIGIP and use Telemetry Streaming and collect metrics
+# Prometheus Example - BIG-IP with Telemetry Streaming and Container Ingress Services
+
+Prometheus is an open source monitoring framework. Explaining Prometheus is out of the scope of this repo. In this repo, I will guide you to setup Prometheus on a BIG-IP and use Telemetry Streaming and collect metrics
 
 ## How to Setup Prometheus Monitoring On Kubernetes Cluster
 
 ### Create a Namespace and ClusterRole
+
 Create a Kubernetes namespace for all our monitoring components
 ```
 kubectl create namespace monitoring
@@ -12,7 +14,9 @@ Create a file named clusterRole.yaml. Locate the clusterRole.yaml file from my r
 ```
 kubectl create -f clusterRole.yaml
 ```
+
 ### Create a Config Map
+
 We should create a config map with all the prometheus scrape config and alerting rules, which will be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files
 
 Create a file called config-map.yaml. Locate the config-map.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/config-map.yaml)
@@ -22,6 +26,7 @@ kubectl create -f config-map.yaml
 The prometheus.yaml contains all the configuration to dynamically discover pods and services running in the Kubernetes cluster. We have the following scrape jobs in our Prometheus scrape configuration. For more information review the following from devopscube.com [link](https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/)
 
 ### Create a Prometheus Deployment
+
 Create a file named prometheus-deployment.yaml. Locate the prometheus-deployment.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-deployment.yaml)
 ```
 kubectl create  -f prometheus-deployment.yaml
@@ -33,6 +38,7 @@ NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
 prometheus-deployment   1/1     1            1           10d
 [kube@k8s-1-18-master prometheus]$
 ```
+
 ## Connecting To Prometheus Dashboard via F5 Container Ingress Services
 
 You can view the deployed Prometheus dashboard in two ways.
@@ -40,7 +46,7 @@ You can view the deployed Prometheus dashboard in two ways.
 * Using Kubectl port forwarding
 * Exposing the Prometheus deployment as a service with F5 Load Balancer using Container Ingress Services
 
-#### Using Kubectl port forwarding
+### Using Kubectl port forwarding
 
 Follow the using Kubectl port forwarding steps documented at devopscube.com [link](https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/)
 
@@ -49,7 +55,8 @@ Follow the using Kubectl port forwarding steps documented at devopscube.com [lin
 To access the Prometheus dashboard over a IP or a DNS name, you need to expose it as Kubernetes service.
 
 ### Create a file named prometheus-service.yaml
-We will expose Prometheus using ClusterIP. ClusterIP allows the BIGIP to forward traffic directly to the Prometheus pod bypassing kube-proxy. Use ClusterIP type, which will create a F5 BIGIP load balancer and points it to the service
+
+We will expose Prometheus using ClusterIP. ClusterIP allows the BIG-IP to forward traffic directly to the Prometheus pod bypassing kube-proxy. Use ClusterIP type, which will create a F5 BIG-IP load balancer and points it to the service
 ```
 apiVersion: v1
 kind: Service
@@ -74,8 +81,10 @@ Create the service using the following command. Locate the prometheus-service.ya
 ```
 Kubectl create -f prometheus-service.yaml --namespace=monitoring
 ```
+
 ### Create a file named prometheus-ingress.yaml for Container Ingress Services
-Create a Ingress for Container Ingress Services to configure F5 BIGIP Locate the prometheus-deployment.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-deployment.yaml)
+
+Create a Ingress for Container Ingress Services to configure F5 BIG-IP Locate the prometheus-deployment.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-deployment.yaml)
 ```
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -96,25 +105,26 @@ spec:
       hosts: ~
       secretName: /Common/clientssl
 ```
-The annotations in the above Ingress provides the public virtual-IP used to connect the prometheus-ui. BIGIP will terminate SSL and work traffic to the pod on port 8080. You can also add additional security setting to the Ingress resource to prevent the prometheus-ui from web attacks.
+The annotations in the above Ingress provides the public virtual-IP used to connect the prometheus-ui. BIG-IP will terminate SSL and work traffic to the pod on port 8080. You can also add additional security setting to the Ingress resource to prevent the prometheus-ui from web attacks.
 
 Create the Ingress using the following command. Locate the prometheus-ingress.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-ingress.yaml)
 ```
 Kubectl create -f prometheus-ingress.yaml --namespace=monitoring
 ```
-Once created, you can access the Prometheus dashboard using the virtual IP address 
+Once created, you can access the Prometheus dashboard using the virtual IP address
 
 ![Image of CRDs](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-11_16-28-32.png)
 
-## Configure BIGIP Telemetry Streaming for Prometheus
+## Configure BIG-IP Telemetry Streaming for Prometheus
 
 Support for the Prometheus pull consumer is available in TS 1.12.0 and later
 
-Install telemetry streaming rpm package on BIGIP. Following link explains how to install the rpm on BIGIP [Downloading and installing Telemetry Streaming](https://clouddocs.f5.com/products/extensions/f5-telemetry-streaming/latest/installation.html)
+Install telemetry streaming rpm package on BIG-IP. Following link explains how to install the rpm on BIG-IP [Downloading and installing Telemetry Streaming](https://clouddocs.f5.com/products/extensions/f5-telemetry-streaming/latest/installation.html)
 
 Since Prometheus support for Telemetry Streaming has not being released you can find the [rpm](https://github.com/mdditt2000/prometheus/blob/master/rpm/f5-telemetry-1.12.0-1.noarch.rpm)
 
 ## Configure Telemetry Streaming declaration
+
 This example shows how to use the Prometheus pull consumer. For this pull consumer, the type
 must be Prometheus in the Pull Consumer class as shown
 ```
@@ -141,14 +151,16 @@ must be Prometheus in the Pull Consumer class as shown
 The Prometheus Pull Consumer outputs the telemetry data according to the Prometheus data
 model specification configured in Prometheus
 
-## Create Prometheus user on BIGIP
+## Create Prometheus user on BIG-IP
+
 Create a user for basic_auth allowing Prometheus access to the metrics_path
 
 ### Configure Prometheus
+
 Since we created a config map with all the prometheus scrape config and alerting rules, it be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files.
 
 ``` 
-     - job_name: 'BIGIP - TS'
+     - job_name: 'BIG-IP - TS'
         scheme: 'https'
         tls_config:
           insecure_skip_verify: true
@@ -159,16 +171,17 @@ Since we created a config map with all the prometheus scrape config and alerting
         static_configs:
         - targets: ['192.168.200.92']
 ```
-Add BIGIP - TS job_name to the config-map.yaml so it applies the configuration Prometheus.yaml
+Add BIG-IP - TS job_name to the config-map.yaml so it applies the configuration Prometheus.yaml
 
 **Field description**
-* schema: How prometheus will connect to the polled deviceConfig
+
+* scheme: How prometheus will connect to the polled deviceConfig
 * tls_config: - Is where you  disable SSL certificate validation
-* metrics path:  - the path used to retrieve metrics from the BIGIP 
-* basic_auth: - credentials for Prometheus to authenticate to the BIGIP
+* metrics path:  - the path used to retrieve metrics from the BIG-IP
+* basic_auth: - credentials for Prometheus to authenticate to the BIG-IP
 * static_configs: - Contains one or more targets for this prometheus job
 
-Check the targets Prometheus dashboard to make sure Prometheus is able to pull BIGIP 
+Check the targets Prometheus dashboard to make sure Prometheus is able to pull BIG-IP
 
 ![Image of Target](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-12_14-52-08.png)
 
@@ -183,4 +196,3 @@ f5_clientside_curConns{virtualServers="/k8s_AS3/Shared/ingress_10_192_75_108_80"
 Graph displaying concurrent connection
 
 ![Image of graph](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2020-05-12_16-08-21.png)
-
