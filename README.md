@@ -121,7 +121,7 @@ Support for the Prometheus pull consumer is available in TS 1.12.0 and later
 
 Install telemetry streaming rpm package on BIG-IP. Following link explains how to install the rpm on BIG-IP [Downloading and installing Telemetry Streaming](https://clouddocs.f5.com/products/extensions/f5-telemetry-streaming/latest/installation.html)
 
-Since Prometheus support for Telemetry Streaming has not being released you can find the [rpm](https://github.com/mdditt2000/prometheus/blob/master/rpm/f5-telemetry-1.12.0-1.noarch.rpm)
+Prometheus support is available in Telemetry Streaming v1.12.0 and can download from the following link [rpm](https://github.com/F5Networks/f5-telemetry-streaming/releases/tag/v1.12.0)
 
 ## Configure Telemetry Streaming declaration
 
