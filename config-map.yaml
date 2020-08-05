@@ -151,7 +151,8 @@ data:
           target_label: kubernetes_name
 
       - job_name: 'BIGIP - TS'
-
+        scrape_timeout: 30s
+        scrape_interval: 30s
         scheme: https
 
         tls_config:
@@ -164,9 +165,23 @@ data:
         static_configs:
         - targets: ['192.168.200.92']
 
-      - job_name: 'CIS'
-
+      - job_name: cis
+        scrape_interval: 10s
         metrics_path: '/metrics'
-        static_configs:
-          - targets:
-            - 10.244.2.31:8080
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: k8s_namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: k8s_pod_name
+          - source_labels: [__address__]
+            action: replace
+            regex: ([^:]+)(?::\d+)?
+            replacement: ${1}:8080
+            target_label: __address__
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            action: keep
+            regex: f5-bigip-ctlr 
