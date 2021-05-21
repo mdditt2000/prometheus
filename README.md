@@ -78,8 +78,9 @@ spec:
 The annotations in the above service YAML makes sure that the service endpoint is scrapped by Prometheus. The prometheus.io/port should always be the target port mentioned in service YAML
 
 Create the service using the following command. Locate the prometheus-service.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-service.yaml)
+
 ```
-Kubectl create -f prometheus-service.yaml --namespace=monitoring
+kubectl create -f prometheus-service.yaml -n monitoring
 ```
 
 ### Create a file named prometheus-ingress.yaml for Container Ingress Services
@@ -108,8 +109,9 @@ spec:
 The annotations in the above Ingress provides the public virtual-IP used to connect the prometheus-ui. BIG-IP will terminate SSL and work traffic to the pod on port 8080. You can also add additional security setting to the Ingress resource to prevent the prometheus-ui from web attacks.
 
 Create the Ingress using the following command. Locate the prometheus-ingress.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-ingress.yaml)
+
 ```
-Kubectl create -f prometheus-ingress.yaml --namespace=monitoring
+kubectl create -f prometheus-ingress.yaml -n monitoring
 ```
 Once created, you can access the Prometheus dashboard using the virtual IP address
 
