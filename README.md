@@ -1,6 +1,6 @@
-# Prometheus Example - BIG-IP with Telemetry Streaming and Container Ingress Services
+# BIG-IP Metrics from Prometheus using Telemetry Streaming and Container Ingress Services
 
-Prometheus is an open source monitoring framework. Explaining Prometheus is out of the scope of this repo. In this repo, I will guide you to setup Prometheus on a BIG-IP and use Telemetry Streaming and collect metrics
+Prometheus is an open source monitoring framework. This user-guide covers setup of Prometheus for BIG-IP and CIS using F5 Telemetry Streaming. In this user-guide, Prometheus is deployed in Kubernetes and configured via a ConfigMap.  
 
 ## How to Setup Prometheus Monitoring On Kubernetes Cluster
 
@@ -15,9 +15,9 @@ Create a file named clusterRole.yaml. Locate the clusterRole.yaml file from my r
 kubectl create -f clusterRole.yaml
 ```
 
-### Create a Config Map
+### Create a ConfigMap
 
-We should create a config map with all the prometheus scrape config and alerting rules, which will be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files
+Create a ConfigMap with all the prometheus scrape config and alerting rules, which will be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files
 
 Create a file called config-map.yaml. Locate the config-map.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/config-map.yaml)
 ```
