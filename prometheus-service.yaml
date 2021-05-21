@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: prometheus-service
-  name: prometheus-service
+  name: prometheus-ui
   namespace: monitoring
   annotations:
       prometheus.io/scrape: 'true'
