@@ -10,3 +10,5 @@ spec:
     termination: edge
     clientSSL: /Common/clientssl
     reference: bigip
+  hosts:
+  - prometheus.example.com
