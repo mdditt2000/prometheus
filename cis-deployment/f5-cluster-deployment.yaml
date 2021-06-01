@@ -32,7 +32,6 @@ spec:
             - "--bigip-password=$(BIGIP_PASSWORD)"
             - "--bigip-url=192.168.200.60"
             - "--bigip-partition=k8s"
-            - "--namespace=nginx-ingress"
             - "--namespace=monitoring"
             - "--pool-member-type=cluster"
             - "--flannel-name=fl-vxlan"
