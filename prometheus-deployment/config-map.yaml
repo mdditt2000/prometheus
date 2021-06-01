@@ -163,7 +163,7 @@ data:
           username: 'prometheus'
           password: 'f5PME123'
         static_configs:
-        - targets: ['192.168.200.92']
+        - targets: ['192.168.200.60']
 
       - job_name: cis
         scrape_interval: 10s
