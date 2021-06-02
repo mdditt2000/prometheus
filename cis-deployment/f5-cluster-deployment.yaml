@@ -40,7 +40,7 @@ spec:
             - "--insecure=true"
             - "--log-as3-response=true"
             - "--manage-ingress=true"
-            - "--http-listen-address=0.0.0.0:8080",
+            - "--http-listen-address=0.0.0.0:8080"
           command: 
             - /app/bin/k8s-bigip-ctlr
           env: 
