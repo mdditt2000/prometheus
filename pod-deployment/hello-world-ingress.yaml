@@ -21,6 +21,14 @@ metadata:
     virtual-server.f5.com/ip: 10.192.75.108
   name: f5-hello-world
 spec:
-  backend:
-    serviceName: f5-hello-world
-    servicePort: 8080
+  rules:
+  - host:
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: f5-hello-world
+            port:
+              number: 8080
