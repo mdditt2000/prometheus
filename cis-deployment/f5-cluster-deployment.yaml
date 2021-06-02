@@ -33,6 +33,7 @@ spec:
             - "--bigip-url=192.168.200.60"
             - "--bigip-partition=k8s"
             - "--namespace=monitoring"
+            - "--namespace=default"
             - "--pool-member-type=cluster"
             - "--flannel-name=fl-vxlan"
             - "--log-level=DEBUG"
