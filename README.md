@@ -45,17 +45,7 @@ prometheus-deployment   1/1     1            1           10d
 
 ## Connecting To Prometheus Dashboard via F5 Container Ingress Services
 
-Connect to the Prometheus dashboard via a VirtualServer configured on BIG-IP
-
-* Exposing the Prometheus deployment as a service with F5 Load Balancer using Container Ingress Services
-
-### Using Kubectl port forwarding
-
-Follow the using Kubectl port forwarding steps documented at devopscube.com [link](https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/)
-
-#### Exposing the Prometheus deployment as a service with F5 Load Balancer using Container Ingress Services
-
-To access the Prometheus dashboard over a IP or a DNS name, you need to expose it as Kubernetes service.
+Connect to the Prometheus dashboard by exposing the Prometheus deployment as a service with F5 Load Balancer using Container Ingress Services
 
 ### Create a file named prometheus-service.yaml
 
