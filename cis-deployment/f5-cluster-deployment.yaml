@@ -18,6 +18,8 @@ spec:
   template: 
     metadata: 
       annotations: 
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
         seccomp.security.alpha.kubernetes.io/defaultProfileName: unconfined
         seccomp.security.alpha.kubernetes.io/pod: unconfined
       creationTimestamp: ~
@@ -40,7 +42,7 @@ spec:
             - "--insecure=true"
             - "--log-as3-response=true"
             - "--manage-ingress=true"
-            - "--http-listen-address=0.0.0.0:8080"
+            - "--http-listen-address=0.0.0.0:9090"
           command: 
             - /app/bin/k8s-bigip-ctlr
           env: 
