@@ -166,7 +166,7 @@ Create a user for basic_auth allowing Prometheus access to the metrics_path
 Since we created a config map with all the prometheus scrape config and alerting rules, it be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files.
 
 ``` 
-- job_name: 'BIGIP - TS'
+      - job_name: 'BIGIP - TS'
         scrape_timeout: 30s
         scrape_interval: 30s
         scheme: https
