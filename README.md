@@ -202,7 +202,7 @@ Since we created a config map with all the prometheus scrape config and alerting
             action: keep
             regex: k8s-bigip-ctlr
 ```
-Add BIG-IP - TS job_name to the config-map.yaml so it applies the configuration Prometheus.yaml
+Add BIG-IP and CIS job_name to the config-map.yaml so it applies the configuration Prometheus.yaml. Re-apply the Prometheus deployment and ConfigMap
 
 **Field description**
 
