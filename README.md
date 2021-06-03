@@ -1,6 +1,6 @@
 # BIG-IP Metrics from Prometheus using Telemetry Streaming and Container Ingress Services
 
-Prometheus is an open source monitoring framework. This user-guide covers setup of Prometheus for BIG-IP and CIS using F5 Telemetry Streaming. In this user-guide, Prometheus is deployed in Kubernetes and configured via a ConfigMap. BIG-IP is load balancing the management traffic to the Prometheus-UI via a Ingress automated via CIS as shown in the diagram below.
+Prometheus is an open source monitoring framework. This user-guide covers setup of Prometheus for BIG-IP and CIS using F5 Telemetry Streaming. In this user-guide, Prometheus is deployed in Kubernetes and configured via a ConfigMap. BIG-IP is load balancing the management traffic to the Prometheus-UI via an Ingress automated via CIS as shown in the diagram below.
 
 ![diagram](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2021-06-03_14-03-16.png)
 
@@ -45,9 +45,8 @@ prometheus-deployment   1/1     1            1           10d
 
 ## Connecting To Prometheus Dashboard via F5 Container Ingress Services
 
-You can view the deployed Prometheus dashboard in two ways.
+Connect to the Prometheus dashboard via a VirtualServer configured on BIG-IP
 
-* Using Kubectl port forwarding
 * Exposing the Prometheus deployment as a service with F5 Load Balancer using Container Ingress Services
 
 ### Using Kubectl port forwarding
@@ -70,7 +69,6 @@ metadata:
   annotations:
       prometheus.io/scrape: 'true'
       prometheus.io/port:   '9090'
-  
 spec:
   selector: 
     app: prometheus-server
@@ -90,25 +88,37 @@ kubectl create -f prometheus-service.yaml -n monitoring
 ### Create a file named prometheus-ingress.yaml for Container Ingress Services
 
 Create a Ingress for Container Ingress Services to configure F5 BIG-IP Locate the prometheus-deployment.yaml file from my repo [yaml](https://github.com/mdditt2000/prometheus/blob/master/prometheus-deployment.yaml)
+
 ```
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
-metadata: 
-  annotations: 
-    virtual-server.f5.com/http-port: "443"
-    ingress.kubernetes.io/allow-http: "false"
-    ingress.kubernetes.io/ssl-redirect: "true"
-    virtual-server.f5.com/ip: "10.192.75.107"
+metadata:
   name: prometheus-ui
   namespace: monitoring
-spec: 
-  backend: 
-    serviceName: prometheus-service
-    servicePort: 8080
-  tls: 
-    - 
-      hosts: ~
-      secretName: /Common/clientssl
+  annotations:
+    virtual-server.f5.com/ip: "10.192.75.107"
+    virtual-server.f5.com/clientssl: '[ { "hosts": [ "prometheus.f5demo.com" ], "bigIpProfile": "/Common/clientssl" } ]'
+    virtual-server.f5.com/https-port: "443"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    virtual-server.f5.com/health: |
+        '[{
+          "path": "/",
+          "send": "HTTP GET /",
+          "interval": 5,
+          "timeout": 10
+        }]'
+spec:
+  rules:
+  - host: prometheus.f5demo.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus-service
+            port:
+              number: 8080
 ```
 The annotations in the above Ingress provides the public virtual-IP used to connect the prometheus-ui. BIG-IP will terminate SSL and work traffic to the pod on port 8080. You can also add additional security setting to the Ingress resource to prevent the prometheus-ui from web attacks.
 
@@ -166,16 +176,41 @@ Create a user for basic_auth allowing Prometheus access to the metrics_path
 Since we created a config map with all the prometheus scrape config and alerting rules, it be mounted to the Prometheus container in /etc/prometheus as prometheus.yaml and prometheus.rules files.
 
 ``` 
-     - job_name: 'BIG-IP - TS'
-        scheme: 'https'
+- job_name: 'BIGIP - TS'
+        scrape_timeout: 30s
+        scrape_interval: 30s
+        scheme: https
+
         tls_config:
           insecure_skip_verify: true
+
         metrics_path: '/mgmt/shared/telemetry/pullconsumer/metrics'
         basic_auth:
           username: 'prometheus'
-          password: <secret>
+          password: 'f5PME123'
         static_configs:
-        - targets: ['192.168.200.92']
+        - targets: ['192.168.200.60']
+
+      - job_name: cis
+        scrape_interval: 10s
+        metrics_path: '/metrics'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: k8s_namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: k8s_pod_name
+          - source_labels: [__address__]
+            action: replace
+            regex: ([^:]+)(?::\d+)?
+            replacement: ${1}:8080
+            target_label: __address__
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            action: keep
+            regex: k8s-bigip-ctlr
 ```
 Add BIG-IP - TS job_name to the config-map.yaml so it applies the configuration Prometheus.yaml
 
