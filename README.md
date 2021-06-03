@@ -1,6 +1,10 @@
 # BIG-IP Metrics from Prometheus using Telemetry Streaming and Container Ingress Services
 
-Prometheus is an open source monitoring framework. This user-guide covers setup of Prometheus for BIG-IP and CIS using F5 Telemetry Streaming. In this user-guide, Prometheus is deployed in Kubernetes and configured via a ConfigMap.  
+Prometheus is an open source monitoring framework. This user-guide covers setup of Prometheus for BIG-IP and CIS using F5 Telemetry Streaming. In this user-guide, Prometheus is deployed in Kubernetes and configured via a ConfigMap. BIG-IP is load balancing the management traffic to the Prometheus-UI via a Ingress automated via CIS as shown in the diagram below.
+
+![diagram](https://github.com/mdditt2000/prometheus/blob/master/diagrams/2021-06-03_14-03-16.png)
+
+Demo on YouTube [video](https://www.youtube.com/watch?v=IEAzvkRjWAE)
 
 ## How to Setup Prometheus Monitoring On Kubernetes Cluster
 
